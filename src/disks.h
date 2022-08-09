@@ -3,10 +3,8 @@
 
 #include "procman.h"
 
-void
-create_disk_view(ProcData *procdata, GtkBuilder *builder);
+void create_disk_view(ProcData *procdata, GtkBuilder *builder);
 
-int
-cb_update_disks(gpointer procdata);
+int cb_update_disks(gpointer procdata);
 
 #endif /* H_MATE_SYSTEM_MONITOR_DISKLIST_1123719137 */

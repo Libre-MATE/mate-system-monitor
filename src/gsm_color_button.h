@@ -23,8 +23,8 @@
 #ifndef __GSM_COLOR_BUTTON_H__
 #define __GSM_COLOR_BUTTON_H__
 
-#include <glib.h>
 #include <gdk/gdk.h>
+#include <glib.h>
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
@@ -34,40 +34,42 @@ G_BEGIN_DECLS
  * the user clicks on the button, a color selection dialog pops up.
  * The color picker emits the "color_set" signal when the color is set.
  */
-#define GSM_TYPE_COLOR_BUTTON            (gsm_color_button_get_type ())
-G_DECLARE_DERIVABLE_TYPE (GSMColorButton, gsm_color_button, GSM, COLOR_BUTTON, GtkDrawingArea)
+#define GSM_TYPE_COLOR_BUTTON (gsm_color_button_get_type())
+G_DECLARE_DERIVABLE_TYPE(GSMColorButton, gsm_color_button, GSM, COLOR_BUTTON,
+                         GtkDrawingArea)
 
 /* Widget types */
-enum
-{
-    GSMCP_TYPE_CPU,
-    GSMCP_TYPE_PIE,
-    GSMCP_TYPE_NETWORK_IN,
-    GSMCP_TYPE_NETWORK_OUT,
-    GSMCP_TYPES
+enum {
+  GSMCP_TYPE_CPU,
+  GSMCP_TYPE_PIE,
+  GSMCP_TYPE_NETWORK_IN,
+  GSMCP_TYPE_NETWORK_OUT,
+  GSMCP_TYPES
 };
 
-struct _GSMColorButtonClass
-{
-    GtkWidgetClass parent_class;
+struct _GSMColorButtonClass {
+  GtkWidgetClass parent_class;
 
-    void (*color_set) (GSMColorButton * cp);
+  void (*color_set)(GSMColorButton* cp);
 
-    /* Padding for future expansion */
-    void (*_gtk_reserved1) (void);
-    void (*_gtk_reserved2) (void);
-    void (*_gtk_reserved3) (void);
-    void (*_gtk_reserved4) (void);
+  /* Padding for future expansion */
+  void (*_gtk_reserved1)(void);
+  void (*_gtk_reserved2)(void);
+  void (*_gtk_reserved3)(void);
+  void (*_gtk_reserved4)(void);
 };
 
-GtkWidget *gsm_color_button_new (const GdkRGBA * color, guint type);
-void gsm_color_button_set_color (GSMColorButton * color_button, const GdkRGBA * color);
-void gsm_color_button_set_fraction (GSMColorButton * color_button, const gdouble fraction);
-void gsm_color_button_set_cbtype (GSMColorButton * color_button, guint type);
-void gsm_color_button_get_color (GSMColorButton * color_button, GdkRGBA * color);
-gdouble gsm_color_button_get_fraction (GSMColorButton * color_button);
-guint gsm_color_button_get_cbtype (GSMColorButton * color_button);
-void gsm_color_button_set_title (GSMColorButton * color_button, const gchar * title);
+GtkWidget* gsm_color_button_new(const GdkRGBA* color, guint type);
+void gsm_color_button_set_color(GSMColorButton* color_button,
+                                const GdkRGBA* color);
+void gsm_color_button_set_fraction(GSMColorButton* color_button,
+                                   const gdouble fraction);
+void gsm_color_button_set_cbtype(GSMColorButton* color_button, guint type);
+void gsm_color_button_get_color(GSMColorButton* color_button, GdkRGBA* color);
+gdouble gsm_color_button_get_fraction(GSMColorButton* color_button);
+guint gsm_color_button_get_cbtype(GSMColorButton* color_button);
+void gsm_color_button_set_title(GSMColorButton* color_button,
+                                const gchar* title);
 const gchar* gsm_color_button_get_title(GSMColorButton* color_button);
 
 G_END_DECLS

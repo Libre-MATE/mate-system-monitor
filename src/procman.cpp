@@ -18,17 +18,18 @@
  *
  */
 
+#ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
 
+#include "procman.h"
+
+#include <glib/gi18n.h>
+#include <gtkmm.h>
+#include <locale.h>
 #include <stdlib.h>
 
-#include <locale.h>
-
-#include <gtkmm.h>
-#include <glib/gi18n.h>
-
 #include "procman-app.h"
-#include "procman.h"
 #include "proctable.h"
 
 ProcData::ProcData()
@@ -40,178 +41,170 @@ ProcData::ProcData()
       timeout(0),
       disk_timeout(0),
       cpu_total_time(1),
-      cpu_total_time_last(1)
-{ }
+      cpu_total_time_last(1) {}
 
-ProcData* ProcData::get_instance()
-{
-    static ProcData instance;
-    return &instance;
+ProcData *ProcData::get_instance() {
+  static ProcData instance;
+  return &instance;
 }
 
-gboolean
-procman_get_tree_state (GSettings *settings, GtkWidget *tree, const gchar *child_schema)
-{
-    GtkTreeModel *model;
-    GList *columns, *it;
-    gint sort_col;
-    GtkSortType order;
+gboolean procman_get_tree_state(GSettings *settings, GtkWidget *tree,
+                                const gchar *child_schema) {
+  GtkTreeModel *model;
+  GList *columns, *it;
+  gint sort_col;
+  GtkSortType order;
 
-    g_assert(tree);
-    g_assert(child_schema);
+  g_assert(tree);
+  g_assert(child_schema);
 
-    GSettings *pt_settings = g_settings_get_child (settings, child_schema);
+  GSettings *pt_settings = g_settings_get_child(settings, child_schema);
 
-    model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree));
+  model = gtk_tree_view_get_model(GTK_TREE_VIEW(tree));
 
-    sort_col = g_settings_get_int (pt_settings, "sort-col");
+  sort_col = g_settings_get_int(pt_settings, "sort-col");
 
-    order = static_cast<GtkSortType>(g_settings_get_int (pt_settings, "sort-order"));
+  order =
+      static_cast<GtkSortType>(g_settings_get_int(pt_settings, "sort-order"));
 
-    if (sort_col != -1)
-        gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (model),
-                                              sort_col,
-                                              order);
+  if (sort_col != -1)
+    gtk_tree_sortable_set_sort_column_id(GTK_TREE_SORTABLE(model), sort_col,
+                                         order);
 
-    columns = gtk_tree_view_get_columns (GTK_TREE_VIEW (tree));
+  columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(tree));
 
-    if (g_strcmp0(child_schema, "proctree") == 0 ||
-        g_strcmp0(child_schema, "disktreenew") == 0)
-    {
-        for (it = columns; it; it = it->next)
-        {
-            GtkTreeViewColumn *column;
-            gint width;
-            gboolean visible;
-            int id;
-            gchar *key;
+  if (g_strcmp0(child_schema, "proctree") == 0 ||
+      g_strcmp0(child_schema, "disktreenew") == 0) {
+    for (it = columns; it; it = it->next) {
+      GtkTreeViewColumn *column;
+      gint width;
+      gboolean visible;
+      int id;
+      gchar *key;
 
-            column = static_cast<GtkTreeViewColumn*>(it->data);
-            id = gtk_tree_view_column_get_sort_column_id (column);
+      column = static_cast<GtkTreeViewColumn *>(it->data);
+      id = gtk_tree_view_column_get_sort_column_id(column);
 
-            key = g_strdup_printf ("col-%d-width", id);
-            g_settings_get (pt_settings, key, "i", &width);
-            g_free (key);
+      key = g_strdup_printf("col-%d-width", id);
+      g_settings_get(pt_settings, key, "i", &width);
+      g_free(key);
 
-            key = g_strdup_printf ("col-%d-visible", id);
-            visible = g_settings_get_boolean (pt_settings, key);
-            g_free (key);
+      key = g_strdup_printf("col-%d-visible", id);
+      visible = g_settings_get_boolean(pt_settings, key);
+      g_free(key);
 
-            gtk_tree_view_column_set_visible (column, visible);
-            if (visible) {
-                /* ensure column is really visible */
-                width = MAX(width, 20);
-                gtk_tree_view_column_set_fixed_width(column, width);
-            }
-        }
-
-        GVariant     *value;
-        GVariantIter iter;
-        int          sortIndex;
-
-        GSList *order = NULL;
-
-        value = g_settings_get_value(pt_settings, "columns-order");
-        g_variant_iter_init(&iter, value);
-
-        while (g_variant_iter_loop (&iter, "i", &sortIndex))
-            order = g_slist_append(order, GINT_TO_POINTER(sortIndex));
-
-        proctable_set_columns_order(GTK_TREE_VIEW(tree), order);
-
-        g_variant_unref(value);
-        g_slist_free(order);
+      gtk_tree_view_column_set_visible(column, visible);
+      if (visible) {
+        /* ensure column is really visible */
+        width = MAX(width, 20);
+        gtk_tree_view_column_set_fixed_width(column, width);
+      }
     }
 
-    g_object_unref(pt_settings);
-    pt_settings = NULL;
+    GVariant *value;
+    GVariantIter iter;
+    int sortIndex;
 
-    g_list_free(columns);
+    GSList *order = NULL;
 
-    return TRUE;
+    value = g_settings_get_value(pt_settings, "columns-order");
+    g_variant_iter_init(&iter, value);
+
+    while (g_variant_iter_loop(&iter, "i", &sortIndex))
+      order = g_slist_append(order, GINT_TO_POINTER(sortIndex));
+
+    proctable_set_columns_order(GTK_TREE_VIEW(tree), order);
+
+    g_variant_unref(value);
+    g_slist_free(order);
+  }
+
+  g_object_unref(pt_settings);
+  pt_settings = NULL;
+
+  g_list_free(columns);
+
+  return TRUE;
 }
 
-void
-procman_save_tree_state (GSettings *settings, GtkWidget *tree, const gchar *child_schema)
-{
-    GtkTreeModel *model;
-    GList *columns;
-    gint sort_col;
-    GtkSortType order;
+void procman_save_tree_state(GSettings *settings, GtkWidget *tree,
+                             const gchar *child_schema) {
+  GtkTreeModel *model;
+  GList *columns;
+  gint sort_col;
+  GtkSortType order;
 
-    if (ProcData::get_instance()->terminating)
-        return;
+  if (ProcData::get_instance()->terminating) return;
 
-    g_assert(tree);
-    g_assert(child_schema);
+  g_assert(tree);
+  g_assert(child_schema);
 
-    GSettings *pt_settings = g_settings_get_child (settings, child_schema);
+  GSettings *pt_settings = g_settings_get_child(settings, child_schema);
 
-    model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree));
-    if (gtk_tree_sortable_get_sort_column_id (GTK_TREE_SORTABLE (model), &sort_col,
-                                              &order)) {
-        g_settings_set_int (pt_settings, "sort-col", sort_col);
-        g_settings_set_int (pt_settings, "sort-order", order);
-    }
+  model = gtk_tree_view_get_model(GTK_TREE_VIEW(tree));
+  if (gtk_tree_sortable_get_sort_column_id(GTK_TREE_SORTABLE(model), &sort_col,
+                                           &order)) {
+    g_settings_set_int(pt_settings, "sort-col", sort_col);
+    g_settings_set_int(pt_settings, "sort-order", order);
+  }
 
-    columns = gtk_tree_view_get_columns (GTK_TREE_VIEW (tree));
+  columns = gtk_tree_view_get_columns(GTK_TREE_VIEW(tree));
 
-    if (g_strcmp0(child_schema, "proctree") == 0 ||
-        g_strcmp0(child_schema, "disktreenew") == 0)
-    {
-        GSList *order;
-        GSList *order_node;
-        GVariantBuilder *builder;
-        GVariant *order_variant;
+  if (g_strcmp0(child_schema, "proctree") == 0 ||
+      g_strcmp0(child_schema, "disktreenew") == 0) {
+    GSList *order;
+    GSList *order_node;
+    GVariantBuilder *builder;
+    GVariant *order_variant;
 
-        order = proctable_get_columns_order(GTK_TREE_VIEW(tree));
+    order = proctable_get_columns_order(GTK_TREE_VIEW(tree));
 
-        builder = g_variant_builder_new (G_VARIANT_TYPE ("ai"));
+    builder = g_variant_builder_new(G_VARIANT_TYPE("ai"));
 
-        for (order_node = order; order_node; order_node = order_node->next)
-            g_variant_builder_add(builder, "i", GPOINTER_TO_INT(order_node->data));
+    for (order_node = order; order_node; order_node = order_node->next)
+      g_variant_builder_add(builder, "i", GPOINTER_TO_INT(order_node->data));
 
-        order_variant = g_variant_new("ai", builder);
-        g_settings_set_value(pt_settings, "columns-order", order_variant);
+    order_variant = g_variant_new("ai", builder);
+    g_settings_set_value(pt_settings, "columns-order", order_variant);
 
-        g_slist_free(order);
-    }
+    g_slist_free(order);
+  }
 
-    g_list_free(columns);
+  g_list_free(columns);
 }
 
-void
-procman_save_config (ProcData *data)
-{
-    GSettings *settings = data->settings;
+void procman_save_config(ProcData *data) {
+  GSettings *settings = data->settings;
 
-    g_assert(data);
+  g_assert(data);
 
-    data->config.maximized = gdk_window_get_state(gtk_widget_get_window (data->app)) & GDK_WINDOW_STATE_MAXIMIZED;
-    if (!data->config.maximized) {
-        // we only want to store/overwrite size and position info with non-maximized state info
-        data->config.width  = gdk_window_get_width (gtk_widget_get_window (data->app));
-        data->config.height = gdk_window_get_height(gtk_widget_get_window (data->app));
+  data->config.maximized =
+      gdk_window_get_state(gtk_widget_get_window(data->app)) &
+      GDK_WINDOW_STATE_MAXIMIZED;
+  if (!data->config.maximized) {
+    // we only want to store/overwrite size and position info with non-maximized
+    // state info
+    data->config.width = gdk_window_get_width(gtk_widget_get_window(data->app));
+    data->config.height =
+        gdk_window_get_height(gtk_widget_get_window(data->app));
 
-        gtk_window_get_position(GTK_WINDOW(data->app), &data->config.xpos, &data->config.ypos);
+    gtk_window_get_position(GTK_WINDOW(data->app), &data->config.xpos,
+                            &data->config.ypos);
 
-        g_settings_set (settings, "window-state", "(iiii)",
-                        data->config.width, data->config.height,
-                        data->config.xpos, data->config.ypos);
-    }
-    g_settings_set_boolean (settings, "maximized", data->config.maximized);
+    g_settings_set(settings, "window-state", "(iiii)", data->config.width,
+                   data->config.height, data->config.xpos, data->config.ypos);
+  }
+  g_settings_set_boolean(settings, "maximized", data->config.maximized);
 
-    g_settings_set_int (settings, "current-tab", data->config.current_tab);
+  g_settings_set_int(settings, "current-tab", data->config.current_tab);
 }
 
-int
-main (int argc, char *argv[])
-{
-    bindtextdomain (GETTEXT_PACKAGE, MATELOCALEDIR);
-    bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-    textdomain (GETTEXT_PACKAGE);
-    setlocale (LC_ALL, "");
+int main(int argc, char *argv[]) {
+  bindtextdomain(GETTEXT_PACKAGE, MATELOCALEDIR);
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+  textdomain(GETTEXT_PACKAGE);
+  setlocale(LC_ALL, "");
 
-    Glib::RefPtr<ProcmanApp> application = ProcmanApp::create();
-    return application->run (argc, argv);
+  Glib::RefPtr<ProcmanApp> application = ProcmanApp::create();
+  return application->run(argc, argv);
 }

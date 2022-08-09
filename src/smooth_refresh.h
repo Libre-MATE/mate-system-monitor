@@ -1,99 +1,92 @@
 #ifndef _PROCMAN_SMOOTH_REFRESH
 #define _PROCMAN_SMOOTH_REFRESH
 
-#include <glib.h>
 #include <gio/gio.h>
+#include <glib.h>
+
 #include <string>
 
 using std::string;
 
-class SmoothRefresh
-{
-  public:
+class SmoothRefresh {
+ public:
+  /*
+    smooth_refresh_new
 
-    /*
-      smooth_refresh_new
+    @config_interval : pointer to config_interval so we can observe
+    config_interval changes.
 
-      @config_interval : pointer to config_interval so we can observe
-      config_interval changes.
+    @return : initialized SmoothRefresh
+  */
+  SmoothRefresh(GSettings *a_settings);
 
-      @return : initialized SmoothRefresh
-    */
-    SmoothRefresh(GSettings *a_settings);
+  ~SmoothRefresh();
 
-    ~SmoothRefresh();
+  /*
+    smooth_refresh_reset
 
-    /*
-      smooth_refresh_reset
+    Resets state and re-read config_interval
+  */
+  void reset();
 
-      Resets state and re-read config_interval
-    */
-    void reset();
+  /*
+    smooth_refresh_get
 
-    /*
-      smooth_refresh_get
+    Computes the new refresh_interval so that CPU usage is lower than
+    SMOOTH_REFRESH_PCPU.
 
-      Computes the new refresh_interval so that CPU usage is lower than
-      SMOOTH_REFRESH_PCPU.
+    @new_interval : where the new refresh_interval is stored.
 
-      @new_interval : where the new refresh_interval is stored.
+    @return : TRUE is refresh_interval has changed. The new refresh_interval
+    is stored in @new_interval. Else FALSE;
+  */
+  bool get(guint &new_interval);
 
-      @return : TRUE is refresh_interval has changed. The new refresh_interval
-      is stored in @new_interval. Else FALSE;
-    */
-    bool get(guint &new_interval);
+  static const string KEY;
+  static const bool KEY_DEFAULT_VALUE;
 
-    static const string KEY;
-    static const bool KEY_DEFAULT_VALUE;
+ private:
+  unsigned get_own_cpu_usage();
 
-  private:
+  static void status_changed(GSettings *settings, const gchar *key,
+                             gpointer user_data);
 
-    unsigned get_own_cpu_usage();
+  void load_settings_value(const gchar *key);
 
-    static void status_changed(GSettings *settings,
-                               const gchar *key,
-                               gpointer user_data);
+  /*
+    fuzzy logic:
+    - decrease refresh interval only if current CPU% and last CPU%
+    are higher than PCPU_LO
+    - increase refresh interval only if current CPU% and last CPU%
+    are higher than PCPU_HI
 
-    void load_settings_value(const gchar *key);
+  */
 
-    /*
-      fuzzy logic:
-      - decrease refresh interval only if current CPU% and last CPU%
-      are higher than PCPU_LO
-      - increase refresh interval only if current CPU% and last CPU%
-      are higher than PCPU_HI
+  enum { PCPU_HI = 22, PCPU_LO = 18 };
 
-    */
+  /*
+    -self : procman's PID (so we call getpid() only once)
 
-    enum
-    {
-        PCPU_HI = 22,
-        PCPU_LO = 18
-    };
+    -interval : current refresh interval
 
-    /*
-      -self : procman's PID (so we call getpid() only once)
+    -config_interval : pointer to the configuration refresh interval.
+    Used to watch configuration changes
 
-      -interval : current refresh interval
+    -interval >= -config_interval
 
-      -config_interval : pointer to the configuration refresh interval.
-      Used to watch configuration changes
+    -last_pcpu : to avoid spikes, the last CPU%. See PCPU_{LO,HI}
 
-      -interval >= -config_interval
+    -last_total_time:
+    -last_cpu_time: Save last cpu and process times to compute CPU%
+  */
 
-      -last_pcpu : to avoid spikes, the last CPU%. See PCPU_{LO,HI}
-
-      -last_total_time:
-      -last_cpu_time: Save last cpu and process times to compute CPU%
-    */
-
-    GSettings *settings;
-    bool active;
-    guint connection;
-    guint interval;
-    unsigned  last_pcpu;
-    guint64 last_total_time;
-    guint64 last_cpu_time;
+  GSettings *settings;
+  bool active;
+  guint connection;
+  guint interval;
+  unsigned last_pcpu;
+  guint64 last_total_time;
+  guint64 last_cpu_time;
 };
 
 #endif /* _PROCMAN_SMOOTH_REFRESH */

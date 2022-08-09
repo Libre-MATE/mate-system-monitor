@@ -2,6 +2,7 @@
 #define H_PROCMAN_LSOF_1161179202
 
 #include <glib.h>
+
 #include "procman.h"
 
 void procman_lsof(ProcData *data);

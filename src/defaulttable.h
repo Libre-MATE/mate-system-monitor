@@ -1,21 +1,20 @@
 #ifndef _PROCMAN_DEFAULTTABLE_H_
 #define _PROCMAN_DEFAULTTABLE_H_
 
-#include <string>
 #include <glibmm/refptr.h>
 #include <glibmm/regex.h>
 
-/* This file contains prettynames and icons for well-known applications, that by default has no .desktop entry */
+#include <string>
 
-struct PrettyTableItem
-{
-    Glib::RefPtr<Glib::Regex> command;
-    std::string icon;
+/* This file contains prettynames and icons for well-known applications, that by
+ * default has no .desktop entry */
 
-PrettyTableItem(const std::string& a_command, const std::string& a_icon)
-: command(Glib::Regex::create("^(" + a_command + ")$")),
-        icon(a_icon)
-    { }
+struct PrettyTableItem {
+  Glib::RefPtr<Glib::Regex> command;
+  std::string icon;
+
+  PrettyTableItem(const std::string& a_command, const std::string& a_icon)
+      : command(Glib::Regex::create("^(" + a_command + ")$")), icon(a_icon) {}
 };
 
 #define ITEM PrettyTableItem
@@ -39,8 +38,7 @@ static const PrettyTableItem default_table[] = {
     ITEM("top|vmstat", "system-monitor"),
     ITEM("vim?", "vim"),
     ITEM("x?inetd", "internet-web-browser"),
-    ITEM("vino.*", "gnome-remote-desktop")
-};
+    ITEM("vino.*", "gnome-remote-desktop")};
 
 #undef ITEM
 

@@ -23,55 +23,55 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
+
 #include "procman.h"
 
-enum
-{
-    COL_NAME = 0,
-    COL_USER,
-    COL_STATUS,
-    COL_VMSIZE,
-    COL_MEMRES,
-    COL_MEMWRITABLE,
-    COL_MEMSHARED,
-    COL_MEMXSERVER,
-    COL_CPU,
-    COL_CPU_TIME,
-    COL_START_TIME,
-    COL_NICE,
-    COL_PID,
-    COL_SECURITYCONTEXT,
-    COL_ARGS,
-    COL_MEM,
-    COL_WCHAN,
-    COL_CGROUP,
-    COL_UNIT,
-    COL_SESSION,
-    COL_SEAT,
-    COL_OWNER,
-    COL_DISK_WRITE_TOTAL,
-    COL_DISK_READ_TOTAL,
-    COL_DISK_WRITE_CURRENT,
-    COL_DISK_READ_CURRENT,
-    COL_PRIORITY,
-    COL_SURFACE,
-    COL_POINTER,
-    COL_TOOLTIP,
-    NUM_COLUMNS
+enum {
+  COL_NAME = 0,
+  COL_USER,
+  COL_STATUS,
+  COL_VMSIZE,
+  COL_MEMRES,
+  COL_MEMWRITABLE,
+  COL_MEMSHARED,
+  COL_MEMXSERVER,
+  COL_CPU,
+  COL_CPU_TIME,
+  COL_START_TIME,
+  COL_NICE,
+  COL_PID,
+  COL_SECURITYCONTEXT,
+  COL_ARGS,
+  COL_MEM,
+  COL_WCHAN,
+  COL_CGROUP,
+  COL_UNIT,
+  COL_SESSION,
+  COL_SEAT,
+  COL_OWNER,
+  COL_DISK_WRITE_TOTAL,
+  COL_DISK_READ_TOTAL,
+  COL_DISK_WRITE_CURRENT,
+  COL_DISK_READ_CURRENT,
+  COL_PRIORITY,
+  COL_SURFACE,
+  COL_POINTER,
+  COL_TOOLTIP,
+  NUM_COLUMNS
 };
 
-GtkWidget*      proctable_new (ProcData *data);
-void            proctable_update_table (ProcData *data);
-void            proctable_update (ProcData *data);
-void            proctable_clear_tree (ProcData *data);
-void            proctable_free_table (ProcData *data);
+GtkWidget *proctable_new(ProcData *data);
+void proctable_update_table(ProcData *data);
+void proctable_update(ProcData *data);
+void proctable_clear_tree(ProcData *data);
+void proctable_free_table(ProcData *data);
 
-GSList*         proctable_get_columns_order(GtkTreeView *treeview);
-void            proctable_set_columns_order(GtkTreeView *treeview, GSList *order);
+GSList *proctable_get_columns_order(GtkTreeView *treeview);
+void proctable_set_columns_order(GtkTreeView *treeview, GSList *order);
 
-char*           make_loadavg_string(void);
+char *make_loadavg_string(void);
 
-void            get_last_selected (GtkTreeModel *model, GtkTreePath *path,
-                                   GtkTreeIter *iter, gpointer data);
+void get_last_selected(GtkTreeModel *model, GtkTreePath *path,
+                       GtkTreeIter *iter, gpointer data);
 
 #endif /* _PROCMAN_PROCTABLE_H_ */
