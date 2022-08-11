@@ -204,7 +204,6 @@ static gboolean is_debug_enabled(void) {
   return enabled;
 }
 
-#if GLIB_CHECK_VERSION(2, 61, 2)
 static gint64 get_relative_time(void) {
   static unsigned long start_time;
   gint64 tv;
@@ -218,21 +217,6 @@ static gint64 get_relative_time(void) {
   tv = g_get_real_time();
   return tv - (gint64)start_time;
 }
-#else
-static double get_relative_time(void) {
-  static unsigned long start_time;
-  GTimeVal tv;
-
-  if (G_UNLIKELY(!start_time)) {
-    glibtop_proc_time buf;
-    glibtop_get_proc_time(&buf, getpid());
-    start_time = buf.start_time;
-  }
-
-  g_get_current_time(&tv);
-  return (tv.tv_sec - start_time) + 1e-6 * tv.tv_usec;
-}
-#endif
 
 static guint64 get_size_from_column(GtkTreeModel *model, GtkTreeIter *first,
                                     const guint index) {
@@ -269,11 +253,7 @@ void procman_debug_real(const char *file, int line, const char *func,
   msg = g_strdup_vprintf(format, args);
   va_end(args);
 
-#if GLIB_CHECK_VERSION(2, 61, 2)
   g_debug("[%li %s:%d %s] %s", get_relative_time(), file, line, func, msg);
-#else
-  g_debug("[%.3f %s:%d %s] %s", get_relative_time(), file, line, func, msg);
-#endif
   g_free(msg);
 }
 
