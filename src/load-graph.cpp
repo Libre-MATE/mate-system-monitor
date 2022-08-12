@@ -749,10 +749,10 @@ LoadGraph::LoadGraph(guint type)
 
   disp = gtk_drawing_area_new();
   gtk_widget_show(disp);
-  g_signal_connect(G_OBJECT(disp), "draw", G_CALLBACK(load_graph_draw), graph);
-  g_signal_connect(G_OBJECT(disp), "configure_event",
+  g_signal_connect(disp, "draw", G_CALLBACK(load_graph_draw), graph);
+  g_signal_connect(disp, "configure_event",
                    G_CALLBACK(load_graph_configure), graph);
-  g_signal_connect(G_OBJECT(disp), "destroy", G_CALLBACK(load_graph_destroy),
+  g_signal_connect(disp, "destroy", G_CALLBACK(load_graph_destroy),
                    graph);
 
   gtk_widget_set_events(disp, GDK_EXPOSURE_MASK);

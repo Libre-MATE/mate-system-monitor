@@ -290,7 +290,7 @@ static void create_single_procproperties_dialog(GtkTreeModel *model,
   gtk_box_pack_start(GTK_BOX(dialog_vbox), scrolled, TRUE, TRUE, 0);
   gtk_widget_show_all(scrolled);
 
-  g_signal_connect(G_OBJECT(procpropdialog), "response",
+  g_signal_connect(procpropdialog, "response",
                    G_CALLBACK(close_procprop_dialog), tree);
 
   gtk_widget_show_all(procpropdialog);

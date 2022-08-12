@@ -391,7 +391,7 @@ static void create_single_memmaps_dialog(GtkTreeModel *model, GtkTreePath *path,
 
   gtk_box_pack_start(GTK_BOX(dialog_vbox), scrolled, TRUE, TRUE, 0);
 
-  g_signal_connect(G_OBJECT(memmapsdialog), "response",
+  g_signal_connect(memmapsdialog, "response",
                    G_CALLBACK(dialog_response), mmdata);
 
   gtk_widget_show_all(memmapsdialog);

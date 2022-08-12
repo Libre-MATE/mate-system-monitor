@@ -130,7 +130,7 @@ void procdialog_create_kill_dialog(ProcData *procdata, int signal) {
   gtk_dialog_set_default_response(GTK_DIALOG(kill_alert_dialog),
                                   GTK_RESPONSE_CANCEL);
 
-  g_signal_connect(G_OBJECT(kill_alert_dialog), "response",
+  g_signal_connect(kill_alert_dialog, "response",
                    G_CALLBACK(kill_dialog_button_pressed), kargs);
 
   gtk_widget_show_all(kill_alert_dialog);
@@ -250,9 +250,9 @@ void procdialog_create_renice_dialog(ProcData *procdata) {
   gtk_box_pack_start(GTK_BOX(vbox), label, FALSE, FALSE, 0);
   g_free(text);
 
-  g_signal_connect(G_OBJECT(dialog), "response",
+  g_signal_connect(dialog, "response",
                    G_CALLBACK(renice_dialog_button_pressed), procdata);
-  g_signal_connect(G_OBJECT(renice_adj), "value_changed",
+  g_signal_connect(renice_adj, "value_changed",
                    G_CALLBACK(renice_scale_changed), priority_label);
 
   gtk_widget_show_all(dialog);
@@ -365,11 +365,9 @@ static void create_field_page(GtkBuilder *builder, GtkWidget *tree,
   gtk_tree_view_column_set_attributes(column, cell, "active", 0, NULL);
 
   if (g_strcmp0(widgetname, "proctree") == 0)
-    g_signal_connect(G_OBJECT(cell), "toggled", G_CALLBACK(proc_field_toggled),
-                     model);
+    g_signal_connect(cell, "toggled", G_CALLBACK(proc_field_toggled), model);
   else if (g_strcmp0(widgetname, "disktreenew") == 0)
-    g_signal_connect(G_OBJECT(cell), "toggled", G_CALLBACK(disk_field_toggled),
-                     model);
+    g_signal_connect(cell, "toggled", G_CALLBACK(disk_field_toggled), model);
 
   gtk_tree_view_column_set_clickable(column, TRUE);
   gtk_tree_view_append_column(GTK_TREE_VIEW(treeview), column);
@@ -445,7 +443,7 @@ void procdialog_create_preferences_dialog(ProcData *procdata) {
       0.25, 1.0, 0);
 
   gtk_spin_button_set_adjustment(GTK_SPIN_BUTTON(spin_button), adjustment);
-  g_signal_connect(G_OBJECT(spin_button), "focus_out_event",
+  g_signal_connect(spin_button, "focus_out_event",
                    G_CALLBACK(SBU::callback), &interval_updater);
 
   smooth_button = GET_WIDGET("smooth_button");
@@ -469,7 +467,7 @@ void procdialog_create_preferences_dialog(ProcData *procdata) {
   spin_button = GET_WIDGET("resources_interval_spinner");
   gtk_spin_button_set_adjustment(GTK_SPIN_BUTTON(spin_button), adjustment);
 
-  g_signal_connect(G_OBJECT(spin_button), "focus_out_event",
+  g_signal_connect(spin_button, "focus_out_event",
                    G_CALLBACK(SBU::callback), &graph_interval_updater);
 
   GtkWidget *bits_button = GET_WIDGET("bits_button");
@@ -483,7 +481,7 @@ void procdialog_create_preferences_dialog(ProcData *procdata) {
 
   spin_button = GET_WIDGET("devices_interval_spinner");
   gtk_spin_button_set_adjustment(GTK_SPIN_BUTTON(spin_button), adjustment);
-  g_signal_connect(G_OBJECT(spin_button), "focus_out_event",
+  g_signal_connect(spin_button, "focus_out_event",
                    G_CALLBACK(SBU::callback), &disks_interval_updater);
 
   check_button = GET_WIDGET("all_devices_check");
@@ -493,7 +491,7 @@ void procdialog_create_preferences_dialog(ProcData *procdata) {
   create_field_page(builder, procdata->disk_list, "disktreenew");
 
   gtk_widget_show_all(prefs_dialog);
-  g_signal_connect(G_OBJECT(prefs_dialog), "response",
+  g_signal_connect(prefs_dialog, "response",
                    G_CALLBACK(prefs_dialog_button_pressed), procdata);
 
   switch (procdata->config.current_tab) {

@@ -368,8 +368,7 @@ void create_disk_view(ProcData *procdata, GtkBuilder *builder) {
                              G_TYPE_INT); /* DISK_USED_PERCENTAGE */
 
   disk_tree = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
-  g_signal_connect(G_OBJECT(disk_tree), "row-activated", G_CALLBACK(open_dir),
-                   NULL);
+  g_signal_connect(disk_tree, "row-activated", G_CALLBACK(open_dir), NULL);
   procdata->disk_list = disk_tree;
   gtk_container_add(GTK_CONTAINER(scrolled), disk_tree);
   g_object_unref(G_OBJECT(model));
@@ -390,7 +389,7 @@ void create_disk_view(ProcData *procdata, GtkBuilder *builder) {
   gtk_tree_view_column_set_resizable(col, TRUE);
   gtk_tree_view_column_set_min_width(col, 30);
   gtk_tree_view_column_set_sizing(col, GTK_TREE_VIEW_COLUMN_FIXED);
-  g_signal_connect(G_OBJECT(col), "notify::fixed-width",
+  g_signal_connect(col, "notify::fixed-width",
                    G_CALLBACK(cb_disks_column_resized), procdata->settings);
   gtk_tree_view_append_column(GTK_TREE_VIEW(disk_tree), col);
 
@@ -406,7 +405,7 @@ void create_disk_view(ProcData *procdata, GtkBuilder *builder) {
     gtk_tree_view_column_set_resizable(col, TRUE);
     gtk_tree_view_column_set_min_width(col, 30);
     gtk_tree_view_column_set_sizing(col, GTK_TREE_VIEW_COLUMN_FIXED);
-    g_signal_connect(G_OBJECT(col), "notify::fixed-width",
+    g_signal_connect(col, "notify::fixed-width",
                      G_CALLBACK(cb_disks_column_resized), procdata->settings);
     gtk_tree_view_append_column(GTK_TREE_VIEW(disk_tree), col);
 
@@ -446,7 +445,7 @@ void create_disk_view(ProcData *procdata, GtkBuilder *builder) {
   gtk_tree_view_column_set_resizable(col, TRUE);
   gtk_tree_view_column_set_min_width(col, 150);
   gtk_tree_view_column_set_sizing(col, GTK_TREE_VIEW_COLUMN_FIXED);
-  g_signal_connect(G_OBJECT(col), "notify::fixed-width",
+  g_signal_connect(col, "notify::fixed-width",
                    G_CALLBACK(cb_disks_column_resized), procdata->settings);
   gtk_tree_view_append_column(GTK_TREE_VIEW(disk_tree), col);
 
@@ -454,6 +453,6 @@ void create_disk_view(ProcData *procdata, GtkBuilder *builder) {
 
   procman_get_tree_state(procdata->settings, disk_tree, "disktreenew");
 
-  g_signal_connect(G_OBJECT(disk_tree), "columns-changed",
+  g_signal_connect(disk_tree, "columns-changed",
                    G_CALLBACK(cb_disk_columns_changed), procdata);
 }

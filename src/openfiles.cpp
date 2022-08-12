@@ -322,7 +322,7 @@ static void create_single_openfiles_dialog(GtkTreeModel *model,
   gtk_box_pack_start(GTK_BOX(dialog_vbox), scrolled, TRUE, TRUE, 0);
   gtk_widget_show_all(scrolled);
 
-  g_signal_connect(G_OBJECT(openfilesdialog), "response",
+  g_signal_connect(openfilesdialog, "response",
                    G_CALLBACK(close_openfiles_dialog), tree);
 
   gtk_widget_show_all(openfilesdialog);

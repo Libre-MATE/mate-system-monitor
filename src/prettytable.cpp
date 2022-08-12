@@ -38,9 +38,9 @@ PrettyTable::PrettyTable() {
 #ifdef GDK_WINDOWING_X11
   if (GDK_IS_X11_DISPLAY(gdk_display_get_default())) {
     WnckScreen *screen = wnck_screen_get_default();
-    g_signal_connect(G_OBJECT(screen), "application_opened",
+    g_signal_connect(screen, "application_opened",
                      G_CALLBACK(PrettyTable::on_application_opened), this);
-    g_signal_connect(G_OBJECT(screen), "application_closed",
+    g_signal_connect(screen, "application_closed",
                      G_CALLBACK(PrettyTable::on_application_closed), this);
   }
 #endif  // GDK_WINDOWING_X11

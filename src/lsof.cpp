@@ -243,7 +243,7 @@ void procman_lsof(ProcData *procdata) {
   // gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
   gtk_window_set_title(GTK_WINDOW(dialog), _("Search for Open Files"));
 
-  // g_signal_connect(G_OBJECT(dialog), "response",
+  // g_signal_connect(dialog, "response",
   //                           G_CALLBACK(close_dialog), NULL);
   gtk_window_set_resizable(GTK_WINDOW(dialog), TRUE);
   gtk_window_set_default_size(GTK_WINDOW(dialog), 575, 400);
@@ -324,17 +324,17 @@ void procman_lsof(ProcData *procdata) {
   gui->entry = GTK_ENTRY(entry);
   gui->count = GTK_LABEL(count_label);
 
-  g_signal_connect(G_OBJECT(entry), "activate",
+  g_signal_connect(entry, "activate",
                    G_CALLBACK(GUI::search_entry_activate), gui);
-  g_signal_connect(G_OBJECT(clear_button), "clicked",
+  g_signal_connect(clear_button, "clicked",
                    G_CALLBACK(GUI::clear_button_clicked), gui);
-  g_signal_connect(G_OBJECT(search_button), "clicked",
+  g_signal_connect(search_button, "clicked",
                    G_CALLBACK(GUI::search_button_clicked), gui);
-  g_signal_connect(G_OBJECT(close_button), "clicked",
+  g_signal_connect(close_button, "clicked",
                    G_CALLBACK(GUI::close_button_clicked), gui);
-  g_signal_connect(G_OBJECT(case_button), "toggled",
+  g_signal_connect(case_button, "toggled",
                    G_CALLBACK(GUI::case_button_toggled), gui);
-  g_signal_connect(G_OBJECT(dialog), "delete-event",
+  g_signal_connect(dialog, "delete-event",
                    G_CALLBACK(GUI::window_delete_event), gui);
 
   gtk_widget_show_all(dialog);

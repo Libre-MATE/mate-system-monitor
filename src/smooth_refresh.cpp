@@ -53,7 +53,7 @@ void SmoothRefresh::load_settings_value(const gchar *key) {
 
 SmoothRefresh::SmoothRefresh(GSettings *a_settings) : settings(a_settings) {
   this->connection =
-      g_signal_connect(G_OBJECT(settings), "changed::smooth-refresh",
+      g_signal_connect(settings, "changed::smooth-refresh",
                        G_CALLBACK(status_changed), this);
 
   this->reset();

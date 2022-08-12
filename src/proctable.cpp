@@ -290,7 +290,7 @@ GtkWidget *proctable_new(ProcData *const procdata) {
   gtk_tree_view_column_set_sizing(column, GTK_TREE_VIEW_COLUMN_FIXED);
   gtk_tree_view_column_set_min_width(column, 20);
   gtk_tree_view_column_set_reorderable(column, TRUE);
-  g_signal_connect(G_OBJECT(column), "notify::fixed-width",
+  g_signal_connect(column, "notify::fixed-width",
                    G_CALLBACK(cb_proctable_column_resized), procdata->settings);
   gtk_tree_view_append_column(GTK_TREE_VIEW(proctree), column);
   gtk_tree_view_set_expander_column(GTK_TREE_VIEW(proctree), column);
@@ -312,7 +312,7 @@ GtkWidget *proctable_new(ProcData *const procdata) {
     gtk_tree_view_column_set_sort_column_id(col, i);
     gtk_tree_view_column_set_resizable(col, TRUE);
     gtk_tree_view_column_set_sizing(col, GTK_TREE_VIEW_COLUMN_FIXED);
-    g_signal_connect(G_OBJECT(col), "notify::fixed-width",
+    g_signal_connect(col, "notify::fixed-width",
                      G_CALLBACK(cb_proctable_column_resized),
                      procdata->settings);
     gtk_tree_view_column_set_reorderable(col, TRUE);
@@ -470,18 +470,17 @@ GtkWidget *proctable_new(ProcData *const procdata) {
     }
   }
 
-  g_signal_connect(
-      G_OBJECT(gtk_tree_view_get_selection(GTK_TREE_VIEW(proctree))), "changed",
-      G_CALLBACK(cb_row_selected), procdata);
-  g_signal_connect(G_OBJECT(proctree), "popup_menu",
+  g_signal_connect(gtk_tree_view_get_selection(GTK_TREE_VIEW(proctree)),
+                   "changed", G_CALLBACK(cb_row_selected), procdata);
+  g_signal_connect(proctree, "popup_menu",
                    G_CALLBACK(cb_tree_popup_menu), procdata);
-  g_signal_connect(G_OBJECT(proctree), "button_press_event",
+  g_signal_connect(proctree, "button_press_event",
                    G_CALLBACK(cb_tree_button_pressed), procdata);
 
-  g_signal_connect(G_OBJECT(proctree), "columns-changed",
+  g_signal_connect(proctree, "columns-changed",
                    G_CALLBACK(cb_columns_changed), procdata);
 
-  g_signal_connect(G_OBJECT(model), "sort-column-changed",
+  g_signal_connect(model, "sort-column-changed",
                    G_CALLBACK(cb_sort_changed), procdata);
 
   return proctree;

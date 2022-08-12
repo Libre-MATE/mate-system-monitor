@@ -186,35 +186,35 @@ static ProcData *procman_data_new(GSettings *settings) {
   pd->config.maximized = g_settings_get_boolean(settings, "maximized");
 
   pd->config.show_tree = g_settings_get_boolean(settings, "show-tree");
-  g_signal_connect(G_OBJECT(settings), "changed::show-tree",
+  g_signal_connect(settings, "changed::show-tree",
                    G_CALLBACK(tree_changed_cb), pd);
 
   pd->config.solaris_mode =
       g_settings_get_boolean(settings, procman::settings::solaris_mode.c_str());
   std::string detail_string("changed::" + procman::settings::solaris_mode);
-  g_signal_connect(G_OBJECT(settings), detail_string.c_str(),
+  g_signal_connect(settings, detail_string.c_str(),
                    G_CALLBACK(solaris_mode_changed_cb), pd);
 
   pd->config.network_in_bits = g_settings_get_boolean(
       settings, procman::settings::network_in_bits.c_str());
   detail_string = "changed::" + procman::settings::network_in_bits;
-  g_signal_connect(G_OBJECT(settings), detail_string.c_str(),
+  g_signal_connect(settings, detail_string.c_str(),
                    G_CALLBACK(network_in_bits_changed_cb), pd);
 
   pd->config.show_kill_warning =
       g_settings_get_boolean(settings, "kill-dialog");
-  g_signal_connect(G_OBJECT(settings), "changed::kill-dialog",
+  g_signal_connect(settings, "changed::kill-dialog",
                    G_CALLBACK(warning_changed_cb), pd);
   pd->config.update_interval = g_settings_get_int(settings, "update-interval");
-  g_signal_connect(G_OBJECT(settings), "changed::update-interval",
+  g_signal_connect(settings, "changed::update-interval",
                    G_CALLBACK(timeouts_changed_cb), pd);
   pd->config.graph_update_interval =
       g_settings_get_int(settings, "graph-update-interval");
-  g_signal_connect(G_OBJECT(settings), "changed::graph-update-interval",
+  g_signal_connect(settings, "changed::graph-update-interval",
                    G_CALLBACK(timeouts_changed_cb), pd);
   pd->config.disks_update_interval =
       g_settings_get_int(settings, "disks-interval");
-  g_signal_connect(G_OBJECT(settings), "changed::disks-interval",
+  g_signal_connect(settings, "changed::disks-interval",
                    G_CALLBACK(timeouts_changed_cb), pd);
 
   /* show_all_fs */
@@ -223,7 +223,7 @@ static ProcData *procman_data_new(GSettings *settings) {
                    G_CALLBACK(show_all_fs_changed_cb), pd);
 
   pd->config.whose_process = g_settings_get_int(settings, "view-as");
-  g_signal_connect(G_OBJECT(settings), "changed::view-as",
+  g_signal_connect(settings, "changed::view-as",
                    G_CALLBACK(view_as_changed_cb), pd);
   pd->config.current_tab = g_settings_get_int(settings, "current-tab");
 
@@ -244,7 +244,7 @@ static ProcData *procman_data_new(GSettings *settings) {
     else
       color = g_strdup("#f25915e815e8");
     detail_string = std::string("changed::") + std::string(key);
-    g_signal_connect(G_OBJECT(settings), detail_string.c_str(),
+    g_signal_connect(settings, detail_string.c_str(),
                      G_CALLBACK(color_changed_cb), pd);
     gdk_rgba_parse(&pd->config.cpu_color[i], color);
     g_free(color);
@@ -254,28 +254,28 @@ static ProcData *procman_data_new(GSettings *settings) {
 
   color = g_settings_get_string(settings, "mem-color");
   if (!color) color = g_strdup("#000000ff0082");
-  g_signal_connect(G_OBJECT(settings), "changed::mem-color",
+  g_signal_connect(settings, "changed::mem-color",
                    G_CALLBACK(color_changed_cb), pd);
   gdk_rgba_parse(&pd->config.mem_color, color);
   g_free(color);
 
   color = g_settings_get_string(settings, "swap-color");
   if (!color) color = g_strdup("#00b6000000ff");
-  g_signal_connect(G_OBJECT(settings), "changed::swap-color",
+  g_signal_connect(settings, "changed::swap-color",
                    G_CALLBACK(color_changed_cb), pd);
   gdk_rgba_parse(&pd->config.swap_color, color);
   g_free(color);
 
   color = g_settings_get_string(settings, "net-in-color");
   if (!color) color = g_strdup("#000000f200f2");
-  g_signal_connect(G_OBJECT(settings), "changed::net-in-color",
+  g_signal_connect(settings, "changed::net-in-color",
                    G_CALLBACK(color_changed_cb), pd);
   gdk_rgba_parse(&pd->config.net_in_color, color);
   g_free(color);
 
   color = g_settings_get_string(settings, "net-out-color");
   if (!color) color = g_strdup("#00f2000000c1");
-  g_signal_connect(G_OBJECT(settings), "changed::net-out-color",
+  g_signal_connect(settings, "changed::net-out-color",
                    G_CALLBACK(color_changed_cb), pd);
   gdk_rgba_parse(&pd->config.net_out_color, color);
   g_free(color);

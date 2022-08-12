@@ -210,7 +210,7 @@ static void create_proc_view(ProcData *procdata, GtkBuilder *builder) {
 
   procdata->endprocessbutton =
       GTK_WIDGET(gtk_builder_get_object(builder, "endprocessbutton"));
-  g_signal_connect(G_OBJECT(procdata->endprocessbutton), "clicked",
+  g_signal_connect(procdata->endprocessbutton, "clicked",
                    G_CALLBACK(cb_end_process_button_pressed), procdata);
 
   /* create popup_menu for the processes tab */
@@ -269,7 +269,7 @@ static void create_sys_view(ProcData *procdata, GtkBuilder *builder) {
 
     color_picker =
         gsm_color_button_new(&cpu_graph->colors.at(i), GSMCP_TYPE_CPU);
-    g_signal_connect(G_OBJECT(color_picker), "color_set",
+    g_signal_connect(color_picker, "color_set",
                      G_CALLBACK(cb_cpu_color_changed), GINT_TO_POINTER(i));
     gtk_box_pack_start(GTK_BOX(temp_hbox), color_picker, FALSE, TRUE, 0);
     gtk_widget_set_size_request(GTK_WIDGET(color_picker), 32, -1);
@@ -305,7 +305,7 @@ static void create_sys_view(ProcData *procdata, GtkBuilder *builder) {
   table = GTK_WIDGET(gtk_builder_get_object(builder, "mem_table"));
 
   color_picker = load_graph_get_mem_color_picker(mem_graph);
-  g_signal_connect(G_OBJECT(color_picker), "color_set",
+  g_signal_connect(color_picker, "color_set",
                    G_CALLBACK(cb_mem_color_changed), procdata);
   title_text = g_strdup_printf(title_template, _("Memory"));
   gsm_color_button_set_title(GSM_COLOR_BUTTON(color_picker), title_text);
@@ -318,7 +318,7 @@ static void create_sys_view(ProcData *procdata, GtkBuilder *builder) {
   gtk_grid_attach(GTK_GRID(table), label, 1, 1, 1, 1);
 
   color_picker = load_graph_get_swap_color_picker(mem_graph);
-  g_signal_connect(G_OBJECT(color_picker), "color_set",
+  g_signal_connect(color_picker, "color_set",
                    G_CALLBACK(cb_swap_color_changed), procdata);
   title_text = g_strdup_printf(title_template, _("Swap"));
   gsm_color_button_set_title(GSM_COLOR_BUTTON(color_picker), title_text);
@@ -343,7 +343,7 @@ static void create_sys_view(ProcData *procdata, GtkBuilder *builder) {
 
   color_picker =
       gsm_color_button_new(&net_graph->colors.at(0), GSMCP_TYPE_NETWORK_IN);
-  g_signal_connect(G_OBJECT(color_picker), "color_set",
+  g_signal_connect(color_picker, "color_set",
                    G_CALLBACK(cb_net_in_color_changed), procdata);
   title_text = g_strdup_printf(title_template, _("Receiving"));
   gsm_color_button_set_title(GSM_COLOR_BUTTON(color_picker), title_text);
@@ -363,7 +363,7 @@ static void create_sys_view(ProcData *procdata, GtkBuilder *builder) {
 
   color_picker =
       gsm_color_button_new(&net_graph->colors.at(1), GSMCP_TYPE_NETWORK_OUT);
-  g_signal_connect(G_OBJECT(color_picker), "color_set",
+  g_signal_connect(color_picker, "color_set",
                    G_CALLBACK(cb_net_out_color_changed), procdata);
   title_text = g_strdup_printf(title_template, _("Sending"));
   gsm_color_button_set_title(GSM_COLOR_BUTTON(color_picker), title_text);
@@ -507,9 +507,9 @@ void create_main_window(ProcData *procdata) {
   create_sys_view(procdata, builder);
   create_disk_view(procdata, builder);
 
-  g_signal_connect(G_OBJECT(notebook), "switch-page",
+  g_signal_connect(notebook, "switch-page",
                    G_CALLBACK(cb_switch_page), procdata);
-  g_signal_connect(G_OBJECT(notebook), "change-current-page",
+  g_signal_connect(notebook, "change-current-page",
                    G_CALLBACK(cb_change_current_page), procdata);
 
   gtk_widget_show_all(notebook);  // need to make page switch work
@@ -517,7 +517,7 @@ void create_main_window(ProcData *procdata) {
                                 procdata->config.current_tab);
   cb_change_current_page(GTK_NOTEBOOK(notebook), procdata->config.current_tab,
                          procdata);
-  g_signal_connect(G_OBJECT(app), "delete_event", G_CALLBACK(cb_app_delete),
+  g_signal_connect(app, "delete_event", G_CALLBACK(cb_app_delete),
                    procdata);
 
   GtkAccelGroup *accel_group;
