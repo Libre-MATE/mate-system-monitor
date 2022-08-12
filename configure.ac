@@ -94,6 +94,7 @@ GETTEXT_PACKAGE=mate-system-monitor
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",
                    [The gettext catalog name])
+AM_CONDITIONAL([USE_NLS], [test "x${USE_NLS}" = "xyes"])
 
 # **********************
 # GLIB_COMPILE_RESOURCES
@@ -135,14 +136,15 @@ Configure summary:
         ${PACKAGE_STRING}
         `echo $PACKAGE_STRING | sed "s/./=/g"`
 
-        Source code location:   ${srcdir}
-        C Compiler:             ${CC}
-        CFLAGS:                 ${CFLAGS}
-        WARN_CFLAGS:            ${WARN_CFLAGS}
-        C++ Compiler:           ${CXX}
-        CXXFLAGS:               ${CXXFLAGS}
-        WARN_CXXFLAGS:          ${WARN_CXXFLAGS}
-        Maintainer mode:        ${USE_MAINTAINER_MODE}
-        Systemd support:        ${have_systemd}
-        wnck support:           ${enable_wnck}
+        Source code location:    ${srcdir}
+        C Compiler:              ${CC}
+        CFLAGS:                  ${CFLAGS}
+        WARN_CFLAGS:             ${WARN_CFLAGS}
+        C++ Compiler:            ${CXX}
+        CXXFLAGS:                ${CXXFLAGS}
+        WARN_CXXFLAGS:           ${WARN_CXXFLAGS}
+        Maintainer mode:         ${USE_MAINTAINER_MODE}
+        Systemd support:         ${have_systemd}
+        wnck support:            ${enable_wnck}
+        Native Language support: $USE_NLS
 "
