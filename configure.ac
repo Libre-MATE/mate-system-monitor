@@ -4,9 +4,9 @@ AC_PREREQ([2.63])
 
 AC_INIT([mate-system-monitor],
 	[1.26.0],
-	[https://github.com/mate-desktop/mate-system-monitor/issues],
+	[https://github.com/Libre-MATE/mate-system-monitor/issues],
 	[mate-system-monitor],
-	[https://mate-desktop.org])
+	[https://github.com/Libre-MATE/mate-system-monitor])
 AC_CONFIG_SRCDIR(configure.ac)
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
