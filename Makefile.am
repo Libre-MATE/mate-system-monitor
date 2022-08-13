@@ -14,7 +14,9 @@ $(appdata_DATA): $(appdata_in_files)
 	$(AM_V_GEN) $(MSGFMT) --xml --template $< -d $(top_srcdir)/po -o $@
 
 org.mate.mate-system-monitor.policy.in: org.mate.mate-system-monitor.policy.in.in Makefile
-	$(AM_V_GEN) sed -e "s|\@pkglibexecdir\@|$(pkglibexecdir)|" $< > $@
+	$(AM_V_GEN)$(SED) \
+		-e "s|\@pkglibexecdir\@|$(pkglibexecdir)|" \
+		$< > $@
 
 DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-compile-warnings=no \
