@@ -6,6 +6,7 @@ AC_INIT([mate-system-monitor],
 	[mate-system-monitor],
 	[https://github.com/Libre-MATE/mate-system-monitor])
 AC_PREREQ([2.63])
+AC_COPYRIGHT([Copyright (C) 2022 Libre MATE])
 AC_CONFIG_SRCDIR(configure.ac)
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
