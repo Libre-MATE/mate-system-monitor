@@ -25,7 +25,8 @@ AC_COPYRIGHT([Copyright (C) 2022 Libre MATE])
 AC_CONFIG_SRCDIR(configure.ac)
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz foreign silent-rules check-news])
+AM_INIT_AUTOMAKE([1.11 no-dist-gzip dist-xz foreign check-news])
+AM_SILENT_RULES([yes])
 AM_MAINTAINER_MODE([enable])
 
 MATE_MAINTAINER_MODE_DEFINES
