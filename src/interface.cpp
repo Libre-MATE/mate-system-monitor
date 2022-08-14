@@ -436,7 +436,7 @@ void create_main_window(ProcData *procdata) {
   GtkBuilder *builder;
 
   builder = gtk_builder_new_from_resource(
-      "/org/mate/mate-system-monitor/interface.ui");
+      "/org/mate/system-monitor/interface.ui");
 
   app = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
   main_box = GTK_WIDGET(gtk_builder_get_object(builder, "main_box"));
