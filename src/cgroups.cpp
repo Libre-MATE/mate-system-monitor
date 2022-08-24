@@ -23,7 +23,6 @@ gboolean cgroups_enabled(void) {
 
 static void append_cgroup_name(char *line, gchar **current_cgroup_name) {
   gchar *controller, *path, *tmp, *path_plus_space;
-  int paren_offset, off, tmp_size;
 
   controller = g_strstr_len(line, -1, ":") + 1;
   if (!controller) return;
@@ -47,8 +46,9 @@ static void append_cgroup_name(char *line, gchar **current_cgroup_name) {
   path_plus_space = g_strdup_printf("%s ", path);
 
   if ((tmp = g_strstr_len(*current_cgroup_name, -1, path_plus_space))) {
-    tmp_size = strlen(*current_cgroup_name) + strlen(controller) + 1;
-    paren_offset =
+    int off;
+    int tmp_size = strlen(*current_cgroup_name) + strlen(controller) + 1;
+    int paren_offset =
         g_strstr_len(tmp + strlen(path), -1, ")") - *current_cgroup_name;
     *(*current_cgroup_name + paren_offset) = '\0';
     tmp = (gchar *)g_strnfill(tmp_size, '\0');

@@ -627,10 +627,9 @@ class MintSysInfo : public SysInfo {
     if (input) {
       while (!input.eof()) {
         string s;
-        int len;
         std::getline(input, s);
         if (s.find("DESCRIPTION=") == 0) {
-          len = strlen("DESCRIPTION=");
+          int len = strlen("DESCRIPTION=");
           // also strip the surrounding quotes
           this->distro_release = s.substr(len + 1, s.size() - len - 2);
         }

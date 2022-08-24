@@ -214,8 +214,6 @@ static void close_openfiles_dialog(GtkDialog *dialog, gint id, gpointer data) {
 static GtkWidget *create_openfiles_tree(ProcData *procdata) {
   GtkWidget *tree;
   GtkListStore *model;
-  GtkTreeViewColumn *column;
-  GtkCellRenderer *cell;
   gint i;
 
   const gchar *const titles[] = {
@@ -234,7 +232,8 @@ static GtkWidget *create_openfiles_tree(ProcData *procdata) {
   g_object_unref(G_OBJECT(model));
 
   for (i = 0; i < NUM_OPENFILES_COL - 1; i++) {
-    cell = gtk_cell_renderer_text_new();
+    GtkTreeViewColumn *column;
+    GtkCellRenderer *cell = gtk_cell_renderer_text_new();
 
     switch (i) {
       case COL_FD:

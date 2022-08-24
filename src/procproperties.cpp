@@ -195,23 +195,18 @@ static void close_procprop_dialog(GtkDialog *dialog, gint id, gpointer data) {
 }
 
 static GtkWidget *create_procproperties_tree(ProcData *procdata) {
-  GtkWidget *tree;
-  GtkListStore *model;
-  GtkTreeViewColumn *column;
-  GtkCellRenderer *cell;
-  gint i;
-
-  model = gtk_list_store_new(NUM_COLS, G_TYPE_STRING, /* Property */
-                             G_TYPE_STRING            /* Value */
+  GtkListStore *model =
+      gtk_list_store_new(NUM_COLS, G_TYPE_STRING, /* Property */
+                         G_TYPE_STRING            /* Value */
   );
 
-  tree = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
-  g_object_unref(G_OBJECT(model));
+  GtkWidget *tree = gtk_tree_view_new_with_model(GTK_TREE_MODEL(model));
 
-  for (i = 0; i < NUM_COLS; i++) {
-    cell = gtk_cell_renderer_text_new();
+  g_object_unref(model);
 
-    column =
+  for (gint i = 0; i < NUM_COLS; i++) {
+    GtkCellRenderer *cell = gtk_cell_renderer_text_new();
+    GtkTreeViewColumn *column =
         gtk_tree_view_column_new_with_attributes(NULL, cell, "text", i, NULL);
     gtk_tree_view_column_set_resizable(column, TRUE);
     gtk_tree_view_append_column(GTK_TREE_VIEW(tree), column);

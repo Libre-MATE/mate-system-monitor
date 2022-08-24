@@ -573,14 +573,11 @@ GtkWidget *gsm_color_button_new(const GdkRGBA *color, guint type) {
 
 static void dialog_response(GtkWidget *widget, GtkResponseType response,
                             gpointer data) {
-  GSMColorButtonPrivate *priv;
   GSMColorButton *color_button = GSM_COLOR_BUTTON(data);
-
-  priv = gsm_color_button_get_instance_private(color_button);
-  GtkColorChooser *color_chooser;
+  GSMColorButtonPrivate *priv = gsm_color_button_get_instance_private(color_button);
 
   if (response == GTK_RESPONSE_OK) {
-    color_chooser = GTK_COLOR_CHOOSER(priv->cc_dialog);
+    GtkColorChooser *color_chooser = GTK_COLOR_CHOOSER(priv->cc_dialog);
 
     gtk_color_chooser_get_rgba(color_chooser, &priv->color);
 
